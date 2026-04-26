@@ -7,11 +7,14 @@
 
 import SwiftUI
 
+// Main horizontal card showing a review
+// can show user info or not, used in feed + profile page
 struct ReviewCardView: View {
     let review: Review
     let showUser: Bool
     var onDelete: (() -> Void)? = nil
 
+    // Read values from user defaults, these are the defualt values
     @AppStorage("showStars") var showStars: Bool = true
     @AppStorage("showReleaseDate") var showReleaseDate: Bool = true
 
@@ -60,7 +63,7 @@ struct ReviewCardView: View {
                         .font(.system(size: 12, weight: .bold))
                         .padding(.trailing, 48)
                     
-                    Text(showReleaseDate ? "\(review.artist) · \("CHANGE ACTUAL DATE LATER")" : review.artist)
+                    Text(showReleaseDate ? "\(review.artist) · \(review.releaseDate.formatted(.dateTime.year()))" : review.artist)
                         .font(.system(size: 12, weight: .light))
                         .foregroundColor(.secondary)
                         .padding(.trailing, 48)
@@ -85,7 +88,7 @@ struct ReviewCardView: View {
                     .padding(.top, 4)
             }
 
-            // delete button — only shown if closure provided
+            // delete button, only shown if closure provided
             if let onDelete {
                 HStack {
                     Spacer()
@@ -104,6 +107,7 @@ struct ReviewCardView: View {
         .padding()
         .background(Color(.secondarySystemBackground))
         .cornerRadius(12)
+        // show date in top right
         .overlay(alignment: .topTrailing) {
             Text(DateHelper.timeAgoDisplay(date: review.timestamp))
                 .font(.caption)

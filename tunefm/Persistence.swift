@@ -7,9 +7,10 @@
 
 import CoreData
 
+// Coredata setup
 struct PersistenceController {
     static let shared = PersistenceController()
-    let container: NSPersistentContainer
+    let container: NSPersistentContainer // main coredata object
 
     init(inMemory: Bool = false) {
         container = NSPersistentContainer(name: "tunefm")
@@ -37,5 +38,5 @@ struct PersistenceController {
     
     var context: NSManagedObjectContext {
         container.viewContext
-    }
+    } // main thread context
 }

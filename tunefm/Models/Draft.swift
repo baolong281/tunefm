@@ -7,6 +7,7 @@
 
 import Foundation
 
+// Models for draft
 struct Draft: Identifiable, Hashable {
     let id: UUID
     let albumName: String
@@ -17,6 +18,7 @@ struct Draft: Identifiable, Hashable {
     let reviewText: String
     let timestamp: Date
 
+    // helper to initialize from coredata entities
     init(from managed: DraftEntity) {
         self.id = managed.id ?? UUID()
         self.albumName = managed.albumName ?? ""

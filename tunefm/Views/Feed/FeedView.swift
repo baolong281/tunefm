@@ -7,6 +7,7 @@
 import SwiftUI
 import Foundation
 
+// main feed view, will be the first thing we see
 struct FeedView: View {
     @StateObject var viewModel = FeedViewModel()
     @EnvironmentObject var authViewModel: AuthViewModel
@@ -18,6 +19,7 @@ struct FeedView: View {
                     ProgressView()
                         .frame(maxWidth: .infinity, maxHeight: .infinity)
                 } else {
+                    // main scrollable feed
                     ScrollView {
                         LazyVStack(spacing: 12) {
                             ForEach(viewModel.reviews) { review in
@@ -29,6 +31,7 @@ struct FeedView: View {
                 }
             }
             .navigationBarTitleDisplayMode(.inline)
+            // show tune.fm at the top
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("tune.fm")
@@ -37,11 +40,11 @@ struct FeedView: View {
                 }
             }
         }
+        // refresh the feed everytime this loads
         .onAppear {
-            viewModel.fetchFeed()
-        }
-        .onDisappear {
-            viewModel.fetchFeed()
+            Task {
+                await viewModel.fetchFeed()
+            }
         }
     }
 }

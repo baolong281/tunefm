@@ -8,8 +8,11 @@
 import SwiftUI
 import SwiftUI
 
+// renders stars based on rating
 struct StarRatingView: View {
     @Binding var rating: Double
+    
+    // if looking in feed this should not be editable
     var editable: Bool = true
 
     var size: CGFloat = 20
@@ -25,12 +28,14 @@ struct StarRatingView: View {
                         editable ?
                         DragGesture(minimumDistance: 0)
                             .onEnded { value in
-                                let half = value.location.x < size / 2
+                                // value.location is relative to the frame of the star
+                                let half = value.location.x < size / 2 // if we are in the first half of the star
                                 let newValue = Double(i) - (half ? 0.5 : 0.0)
                                 rating = clamp(newValue)
                             }
                         : nil
                     )
+                    .foregroundStyle(.yellow)
             }
         }
     }
@@ -47,11 +52,13 @@ struct StarRatingView: View {
             name = "star"
         }
 
+        // star images included by apple
         return Image(systemName: name)
             .resizable()
             .aspectRatio(contentMode: .fit)
     }
 
+    // rounds to nearest 0.5 increment and clamps in [0, 5]
     private func clamp(_ x: Double) -> Double {
         min(max((x * 2).rounded() / 2, 0), 5)
     }

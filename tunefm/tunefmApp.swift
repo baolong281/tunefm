@@ -22,7 +22,8 @@ class AppDelegate: NSObject, UIApplicationDelegate {
 @main
 struct tunefmApp: App {
     @UIApplicationDelegateAdaptor(AppDelegate.self) var delegate
-    @StateObject var authViewModel = AuthViewModel()
+    @StateObject var authViewModel = AuthViewModel() // Environment state holding auth status / user object
+    @StateObject var tabState = TabState() // State for main tab view, holds what tab we are on
     
     let persistenceController = PersistenceController.shared
 
@@ -30,7 +31,9 @@ struct tunefmApp: App {
         WindowGroup {
                 ContentView()
                     .environment(\.managedObjectContext, persistenceController.container.viewContext)
+                    // inject as environment objects so any subview can use these
                     .environmentObject(authViewModel)
+                    .environmentObject(tabState)
         }
     }
 }

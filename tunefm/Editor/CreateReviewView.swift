@@ -7,12 +7,22 @@
 
 import SwiftUI
 
+// Single view to create views or edit drafts
+// only the viewModel cares about that logic however
 struct CreateReviewView: View {
     @ObservedObject var viewModel: CreateReviewViewModel
     @EnvironmentObject var authViewModel: AuthViewModel
+    @EnvironmentObject var tabState: TabState
+    
+    // we need the dismiss so that if we go back to the add it shows the search again after making a post
+    @Environment(\.dismiss) var dismiss
+    
+    // lets us tap out of keyboard
+    @FocusState var isFocused: Bool
     
     var body: some View {
         VStack(alignment: .leading, spacing: 24) {
+            // album information at top
             HStack(spacing: 12) {
                 AsyncImage(url: URL(string: viewModel.album.artworkUrl100)) { image in
                     image.resizable()
@@ -26,14 +36,14 @@ struct CreateReviewView: View {
                     Text(viewModel.album.collectionName)
                     Text(viewModel.album.artistName)
                         .font(.caption)
-                        .foregroundStyle(.secondary)
-                }
+                        .foregroundStyle(.secondary) }
                 Spacer()
             }
             .padding()
             .background(Color(.systemGray6))
             .cornerRadius(12)
             
+            // star ratings
             VStack(alignment: .leading, spacing: 8) {
                 Text("Rating")
                     .font(.system(size: 18, weight: .bold))
@@ -41,16 +51,34 @@ struct CreateReviewView: View {
                 StarRatingView(rating: $viewModel.rating, editable: true)
             }
             
+            
             TextEditor(text: $viewModel.reviewText)
                 .padding(10)
                 .background(Color(.systemGray6))
                 .cornerRadius(12)
                 .frame(height: 200)
                 .scrollContentBackground(.hidden)
+                .focused($isFocused)
+            
+            if let error = viewModel.error {
+                Text(error)
+                    .foregroundColor(.red)
+                    .lineLimit(3)
+            }
 
+
+            // save draft and post reviews button
+            // on press we swap to the corresponding screens with tabState
             HStack(spacing: 16){
                 Button("Save Draft") {
-                    viewModel.saveDraft()
+                    guard let uid = authViewModel.user?.uid else { return }
+                    
+                    let draftSuccessful = viewModel.saveDraft(uid: uid)
+                    
+                    if draftSuccessful {
+                        tabState.switchToDrafts()
+                        dismiss()
+                    }
                 }
                 .font(.system(size: 16, weight: .bold))
                 .frame(maxWidth: .infinity)
@@ -60,10 +88,16 @@ struct CreateReviewView: View {
                 .clipShape(Capsule())
                 
                 Button("Post Review") {
-                    guard let user = authViewModel.user else { return }
-                    viewModel.postReview(
-                        uid: user.uid, username: user.username, userPhotoBase64: user.photoBase64
-                    )
+                    Task {
+                        guard let user = authViewModel.user else { return }
+                        let postedSuccessful = await viewModel.postReview(
+                            uid: user.uid, username: user.username, userPhotoBase64: user.photoBase64
+                        )
+                        if postedSuccessful {
+                            tabState.switchToFeed()
+                            dismiss()
+                        }
+                    }
                 }
                 .font(.system(size: 16, weight: .bold))
                 .frame(maxWidth: .infinity)
@@ -77,17 +111,9 @@ struct CreateReviewView: View {
         .padding(24)
         .navigationTitle("New Review")
         .navigationBarTitleDisplayMode(.inline)
+        // unfocus the keyboard if we tap anywhere
+        .onTapGesture {
+            isFocused = false
+        }
     }
-}
-
-#Preview {
-    let dummyAlbum = Album(
-        artistName: "Radiohead",
-        artworkUrl100: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQtWGSIvVyEH5txLOSUeWDmU69a4x7H4AYXjA&s",
-        releaseDate: ISO8601DateFormatter().date(from: "2016-05-08T00:00:00Z")!,
-        collectionName: "OK Computer",
-        collectionId: 123456789
-    )
-    
-    CreateReviewView(viewModel: CreateReviewViewModel(album: dummyAlbum))
 }

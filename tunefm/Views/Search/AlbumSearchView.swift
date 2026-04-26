@@ -16,6 +16,7 @@ struct AlbumSearchView: View {
 
     var body: some View {
         NavigationStack {
+            // search box at the top
             VStack(alignment: .leading, spacing: 8) {
                     HStack {
                         Image(systemName: "magnifyingglass")
@@ -28,8 +29,11 @@ struct AlbumSearchView: View {
                     .background(Color(.systemGray5))
                     .cornerRadius(12)
                     
+                // list of albums
                 List(albums, id: \.collectionId) { album in
+                    // each album is a link to the createreview screen with this selected album provided
                     NavigationLink {
+                        // we construct viewmodel ourselves depending on if we are making a brand new review or one from a draft
                         CreateReviewView(viewModel: CreateReviewViewModel(album: album))
                     } label: {
                         HStack(spacing: 12) {
@@ -57,6 +61,7 @@ struct AlbumSearchView: View {
             .navigationTitle("Album Search")
             .navigationBarTitleDisplayMode(.inline)
         }
+        // whenever query is changed we run a new one and cancel any old ones for debouncing
         .onChange(of: query) { oldValue, newValue in
                // cancel the last running search and make a new one
                searchTask?.cancel()
@@ -65,6 +70,7 @@ struct AlbumSearchView: View {
                    try? await Task.sleep(nanoseconds: 400_000_000) // debounce 400ms
                    guard !Task.isCancelled else { return }
 
+                   // fetch new albums
                    let results = try? await AlbumSearchService.search(query: newValue)
 
                    // state updates need to be done in main thread

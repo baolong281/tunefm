@@ -8,21 +8,28 @@
 import Foundation
 import Combine
 
-@MainActor
 class FeedViewModel: ObservableObject {
     @Published var reviews: [Review] = []
     @Published var isLoading: Bool = false
-    @Published var error: String = ""
 
-    func fetchFeed() {
-        isLoading = true
-        Task {
-            do {
-                reviews = try await FirebaseReviewService.fetchFeed()
-            } catch {
-                self.error = error.localizedDescription
-            }
-            isLoading = false
+    // fetch the feed
+    // property updates occur in main thread to update on the ui
+    func fetchFeed() async {
+        DispatchQueue.main.async {
+            self.isLoading = true
         }
+        do {
+            let result = try await FirebaseReviewService.fetchFeed()
+            DispatchQueue.main.async {
+                self.reviews = result
+                self.isLoading = false
+            }
+        } catch {
+            DispatchQueue.main.async {
+                self.isLoading = false
+            }
+            print(error.localizedDescription)
+        }
+        
     }
 }

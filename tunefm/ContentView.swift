@@ -18,6 +18,7 @@ struct ContentView: View {
             NavigationStack {
                 SignInView()
             }
+            // render auth stuff if not signed in, otherwise main view
         }
     }
 }

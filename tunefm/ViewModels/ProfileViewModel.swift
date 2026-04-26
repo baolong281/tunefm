@@ -10,15 +10,20 @@ import FirebaseFirestore
 import Combine
 
 class ProfileViewModel: ObservableObject {
+    // list of reviews to display
     @Published var reviews: [Review] = []
     @Published var isLoading: Bool = false
     @Published var error: String = ""
 
     private let db = Firestore.firestore()
+    // we need to store the handler otherwise this is never deallocated when view is closed (i think?)
+    private var listenerHandle: ListenerRegistration?
 
     func fetchReviews(for uid: String) {
+        // on first fetch set loading true
+        // snapshot listener subscribes to changes so deletes automatically update on ui
         isLoading = true
-        db.collection("reviews")
+        listenerHandle = db.collection("reviews")
             .whereField("uid", isEqualTo: uid)
             .order(by: "timestamp", descending: true)
             .addSnapshotListener { snapshot, error in
@@ -27,9 +32,12 @@ class ProfileViewModel: ObservableObject {
                     self.error = error.localizedDescription
                     return
                 }
-                self.reviews = snapshot?.documents.compactMap { doc in
-                    try? doc.data(as: Review.self)
-                } ?? []
+                
+                DispatchQueue.main.async {
+                    self.reviews = snapshot?.documents.compactMap { doc in
+                        try? doc.data(as: Review.self)
+                    } ?? []
+                }
             }
     }
 
@@ -40,5 +48,9 @@ class ProfileViewModel: ObservableObject {
                 self.error = error.localizedDescription
             }
         }
+    }
+    
+    deinit {
+        listenerHandle?.remove()
     }
 }

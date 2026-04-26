@@ -8,6 +8,7 @@
 // Utilities/Date+Extensions.swift
 import Foundation
 
+// converts dates into how long ago they occured
 class DateHelper {
     static func timeAgoDisplay(date: Date) -> String {
         let seconds = Int(Date().timeIntervalSince(date))

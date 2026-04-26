@@ -7,6 +7,8 @@
 // Views/Drafts/DraftCardView.swift
 import SwiftUI
 
+// drafts cards have few extra buttons from review cards so i just made a new one
+// pass the draft object to display and some callbacks for when we pres the buttons
 struct DraftCardView: View {
     let draft: Draft
     let onEdit: () -> Void
@@ -17,6 +19,7 @@ struct DraftCardView: View {
         VStack(alignment: .leading, spacing: 12) {
 
             // album row
+            // this probably should've been a component 
             HStack(spacing: 12) {
                 AsyncImage(url: URL(string: draft.artworkURL)) { image in
                     image
@@ -25,13 +28,13 @@ struct DraftCardView: View {
                 } placeholder: {
                     Rectangle().foregroundColor(.gray)
                 }
-                .frame(width: 56, height: 56)
+                .frame(width: 80, height: 80)
                 .cornerRadius(4)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(draft.albumName)
                         .font(.system(size: 16, weight: .bold))
-                    Text("\(draft.artist) · \(draft.albumReleaseDate)")
+                    Text("\(draft.artist) · \(draft.albumReleaseDate.formatted(.dateTime.year()))")
                         .font(.system(size: 14, weight: .light))
                         .foregroundColor(.secondary)
                     StarRatingView(rating: .constant(draft.rating), editable: false)
@@ -73,8 +76,12 @@ struct DraftCardView: View {
                 Button("Delete") {
                     onDelete()
                 }
-                .font(.system(size: 12, weight: .medium))
+                .font(.system(size: 12, weight: .bold))
+                .padding(.vertical, 6)
+                .padding(.horizontal, 14)
+                .background(Color(.systemGray5))
                 .foregroundColor(.red)
+                .clipShape(Capsule())
             }
         }
         .padding()

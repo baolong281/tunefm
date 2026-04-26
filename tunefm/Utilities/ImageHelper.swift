@@ -8,7 +8,7 @@
 import UIKit
 
 // we need to do profile pictures but firebase storage costs money
-// instead we try to compress < 1mb and store as base64 in user field
+// instead we try to compress < 1mb and store as base64 in user field of firebase
 struct ImageHelper {
     static let maxBytes = 900_000  // 900k since 1mb is firestore limit
 

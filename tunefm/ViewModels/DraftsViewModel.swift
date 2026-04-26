@@ -8,18 +8,20 @@ import Foundation
 import Combine
 
 class DraftsViewModel: ObservableObject {
+    // list of drafts to display
     @Published var drafts: [Draft] = []
-    @Published var error: String = ""
 
-    func fetchDrafts() {
-        drafts = DraftService.fetchDrafts()
+    // drafts shared locally so we need specific user id
+    func fetchDrafts(uid: String) {
+        drafts = DraftService.fetchDrafts(uid: uid)
     }
 
+    // delete the draft from local storage
     func deleteDraft(_ draft: Draft) {
         DraftService.deleteDraft(draft)
-        fetchDrafts()
     }
 
+    // publish the draft to firebase
     func publishDraft(_ draft: Draft, user: AppUser) async {
         let review = Review(
             uid: user.uid,
