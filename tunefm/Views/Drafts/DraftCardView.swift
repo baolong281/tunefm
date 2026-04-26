@@ -26,16 +26,16 @@ struct DraftCardView: View {
                         .resizable()
                         .scaledToFill()
                 } placeholder: {
-                    Rectangle().foregroundColor(.gray)
+                    Rectangle().foregroundColor(.appSurfaceMuted)
                 }
                 .frame(width: 80, height: 80)
                 .cornerRadius(4)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(draft.albumName)
-                        .font(.system(size: 16, weight: .bold))
+                        .font(.appBodyBold)
                     Text("\(draft.artist) · \(draft.albumReleaseDate.formatted(.dateTime.year()))")
-                        .font(.system(size: 14, weight: .light))
+                        .font(.appCaption)
                         .foregroundColor(.secondary)
                     StarRatingView(rating: .constant(draft.rating), editable: false)
                 }
@@ -44,7 +44,7 @@ struct DraftCardView: View {
             // review text
             if !draft.reviewText.isEmpty {
                 Text("\"\(draft.reviewText)\"")
-                    .font(.system(size: 14))
+                    .font(.appBody)
                     .foregroundColor(.secondary)
                     .lineLimit(3)
             }
@@ -54,20 +54,20 @@ struct DraftCardView: View {
                 Button("Edit Draft") {
                     onEdit()
                 }
-                .font(.system(size: 12, weight: .medium))
+                .font(.appCaption)
                 .padding(.vertical, 6)
                 .padding(.horizontal, 14)
-                .background(Color(.systemGray5))
-                .foregroundColor(.primary)
+                .background(Color.appSurfaceMuted)
+                .foregroundColor(.appTextPrimary)
                 .clipShape(Capsule())
 
                 Button("Publish") {
                     onPublish()
                 }
-                .font(.system(size: 12, weight: .medium))
+                .font(.appCaption)
                 .padding(.vertical, 6)
                 .padding(.horizontal, 14)
-                .background(Color.blue)
+                .background(Color.appAccent)
                 .foregroundColor(.white)
                 .clipShape(Capsule())
 
@@ -76,16 +76,16 @@ struct DraftCardView: View {
                 Button("Delete") {
                     onDelete()
                 }
-                .font(.system(size: 12, weight: .bold))
+                .font(.appCaption)
                 .padding(.vertical, 6)
                 .padding(.horizontal, 14)
-                .background(Color(.systemGray5))
-                .foregroundColor(.red)
+                .background(Color.appSurfaceMuted)
+                .foregroundColor(.appDestructive)
                 .clipShape(Capsule())
             }
         }
         .padding()
-        .background(Color(.secondarySystemBackground))
+        .background(Color.appSurface)
         .cornerRadius(12)
     }
 }

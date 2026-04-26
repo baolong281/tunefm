@@ -24,29 +24,30 @@ struct ProfileView: View {
             ScrollView {
                 // profile image + username at top
                 VStack(spacing: 16) {
-                    HStack(spacing: 24) {
-                        
-                        ProfilePhotoPicker(imageData: $imageData, profileImage: $profileImage)
-
-                        Text("@\(authViewModel.user?.username ?? "")")
-                            .font(.system(size: 38))
-                            .fontWeight(.bold)
-                        
-                        Spacer()
-                    }
-                    .padding(.horizontal, 12)
-
+                    Text("@\(authViewModel.user?.username ?? "")")
+                        .font(.appDisplay)
+                        .fontWeight(.bold)
+                    
+                    ProfilePhotoPicker(imageData: $imageData, profileImage: $profileImage)
+                    
                     // reviews feed
                     Text("Published Reviews")
-                        .font(.title3)
+                        .font(.appTitle)
                         .frame(maxWidth: .infinity, alignment: .leading)
                         .padding(.horizontal)
 
                     if viewModel.isLoading {
                         ProgressView()
                     } else if viewModel.reviews.isEmpty {
-                        Text("No reviews yet.")
-                            .foregroundColor(.secondary)
+                        Spacer()
+                        VStack(spacing: 8) {
+                            Text("No reviews yet")
+                                .font(.appTitle)
+                            Text("Trying writing one!")
+                                .font(.appBody)
+                                .foregroundColor(.secondary)
+                        }
+                        .frame(maxWidth: .infinity, maxHeight: .infinity)
                     } else {
                         // we use lazy vstack because its better for long lists apparently
                         LazyVStack(spacing: 12) {

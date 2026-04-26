@@ -33,12 +33,12 @@ struct ReviewCardView: View {
                             .clipShape(Circle())
                     } else {
                         Circle()
-                            .foregroundColor(.gray)
+                            .foregroundColor(.appSurfaceMuted)
                             .frame(width: 32, height: 32)
                     }
 
                     Text("@\(review.username)")
-                        .font(.subheadline)
+                        .font(.appBodyBold)
                         .fontWeight(.medium)
 
                     Spacer()
@@ -53,18 +53,18 @@ struct ReviewCardView: View {
                         .resizable()
                         .scaledToFill()
                 } placeholder: {
-                    Rectangle().foregroundColor(.gray)
+                    Rectangle().foregroundColor(.appSurfaceMuted)
                 }
                 .frame(width: 80, height: 80)
                 .cornerRadius(4)
 
                 VStack(alignment: .leading, spacing: 2) {
                     Text(review.albumName)
-                        .font(.system(size: 12, weight: .bold))
+                        .font(.appBodyBold)
                         .padding(.trailing, 48)
                     
                     Text(showReleaseDate ? "\(review.artist) · \(review.releaseDate.formatted(.dateTime.year()))" : review.artist)
-                        .font(.system(size: 12, weight: .light))
+                        .font(.appCaption)
                         .foregroundColor(.secondary)
                         .padding(.trailing, 48)
 
@@ -72,8 +72,9 @@ struct ReviewCardView: View {
                         StarRatingView(rating: .constant(review.rating), editable: false)
                     } else {
                         Text(String(format: "%.1f / 5.0", review.rating))
-                            .font(.subheadline)
+                            .font(.appCaption)
                             .foregroundColor(.secondary)
+                            .fontWeight(.bold)
                     }
                 }
             }
@@ -81,7 +82,7 @@ struct ReviewCardView: View {
             // review text
             if !review.reviewText.isEmpty {
                 Text("\"\(review.reviewText)\"")
-                    .font(.system(size: 14, weight: .regular))
+                    .font(.appBody)
                     .foregroundColor(.secondary)
                     .lineLimit(3)
                     .padding(.bottom, 24)
@@ -95,22 +96,22 @@ struct ReviewCardView: View {
                     Button("Delete") {
                         onDelete()
                     }
-                    .font(.system(size: 10, weight: .bold))
+                    .font(.appCaption)
                     .padding(.vertical, 4)
                     .padding(.horizontal, 18)
-                    .background(Color(.systemGray5))
-                    .foregroundColor(.red)
+                    .background(Color.appSurfaceMuted)
+                    .foregroundColor(.appDestructive)
                     .clipShape(Capsule())
                 }
             }
         }
         .padding()
-        .background(Color(.secondarySystemBackground))
+        .background(Color.appSurface)
         .cornerRadius(12)
         // show date in top right
         .overlay(alignment: .topTrailing) {
             Text(DateHelper.timeAgoDisplay(date: review.timestamp))
-                .font(.caption)
+                .font(.appCaption)
                 .foregroundColor(.secondary)
                 .padding(12)
         }

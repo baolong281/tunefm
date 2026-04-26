@@ -19,23 +19,23 @@ struct SignInView: View {
             // header
             VStack (alignment: .leading, spacing: 12) {
                 Text("tune.fm")
-                    .font(.title)
+                    .font(.appDisplay)
                     .fontWeight(.bold)
                 
                 Text("Your musical listening journal.")
-                    .font(.title3)
+                    .font(.appTitle)
             }
             
             // text fields
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Email")
-                        .font(.headline)
+                        .font(.appBodyBold)
                     
                     TextField("\("example@email.com")", text: $email) // stops from showing blue somehow
                         .padding()
-                        .background(Color(.systemGray6))
-                        .foregroundStyle(.gray)
+                        .background(Color.appField)
+                        .foregroundStyle(Color.appTextSecondary)
                         .cornerRadius(25)
                         .keyboardType(.emailAddress)
                         .autocorrectionDisabled()
@@ -44,11 +44,11 @@ struct SignInView: View {
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Password")
-                        .font(.headline)
+                        .font(.appBodyBold)
                     
                     SecureField("********", text: $password)
                         .padding()
-                        .background(Color(.systemGray6))
+                        .background(Color.appField)
                         .cornerRadius(25)
                         .onSubmit {
                             authViewModel.signIn(email: email, password: password)
@@ -59,7 +59,7 @@ struct SignInView: View {
             // if there is an error display at the bottom
             if let error = authViewModel.signInError {
                 Text(error)
-                    .foregroundColor(.red)
+                    .foregroundColor(.appDestructive)
             }
             
             Button {
@@ -78,7 +78,7 @@ struct SignInView: View {
                 .foregroundColor(.white)
                 .frame(maxWidth: .infinity)
                 .padding()
-                .background(Color.blue)
+                .background(Color.appAccent)
                 .clipShape(Capsule())
             }
 
@@ -86,10 +86,10 @@ struct SignInView: View {
             NavigationLink(destination: CreateAccountView()) {
                 Text("Create Account")
                     .fontWeight(.bold)
-                    .foregroundColor(.black)
+                    .foregroundStyle(Color.appTextPrimary)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color(.systemGray5))
+                    .background(Color.appSurfaceMuted)
                     .clipShape(Capsule())
             }
             

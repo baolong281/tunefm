@@ -27,11 +27,11 @@ struct CreateAccountView: View {
             VStack(alignment: .leading, spacing: 20) {
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Username")
-                        .font(.headline)
+                        .font(.appBodyBold)
                     
                     TextField("user123", text: $username)
                         .padding()
-                        .background(Color(.systemGray6))
+                        .background(Color.appField)
                         .cornerRadius(25)
                         .autocorrectionDisabled()
                         .textInputAutocapitalization(.never)
@@ -39,11 +39,11 @@ struct CreateAccountView: View {
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Email")
-                        .font(.headline)
+                        .font(.appBodyBold)
                     
                     TextField("\("example@email.com")", text: $email) // doing this stops it from showing blue somehow
                         .padding()
-                        .background(Color(.systemGray6))
+                        .background(Color.appField)
                         .cornerRadius(25)
                         .foregroundStyle(.gray)
                         .keyboardType(.emailAddress)
@@ -53,18 +53,18 @@ struct CreateAccountView: View {
                 
                 VStack(alignment: .leading, spacing: 8) {
                     Text("Password")
-                        .font(.headline)
+                        .font(.appBodyBold)
                     
                     SecureField("**************", text: $password)
                         .padding()
-                        .background(Color(.systemGray6))
+                        .background(Color.appField)
                         .cornerRadius(25)
                 }
                 
                 if let error = authViewModel.createAccountError {
                     Text(error)
-                        .foregroundColor(.red)
-                        .font(.caption)
+                        .foregroundColor(.appDestructive)
+                        .font(.appCaption)
                 }
                 
                 // create account button
@@ -84,7 +84,7 @@ struct CreateAccountView: View {
                     .foregroundColor(.white)
                     .frame(maxWidth: .infinity)
                     .padding()
-                    .background(Color.blue)
+                    .background(Color.appAccent)
                     .clipShape(Capsule())
                 }
             }

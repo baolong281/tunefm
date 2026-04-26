@@ -29,15 +29,15 @@ struct ProfilePhotoPicker: View {
             } else {
                 Circle()
                     .frame(width: 120, height: 120)
-                    .foregroundColor(.gray)
+                    .foregroundColor(.appSurfaceMuted)
             }
             
             VStack(spacing: 12) {
                 // library button
                 PhotosPicker(selection: $selectedPhoto, matching: .images) {
                     Text("Select photo from library")
-                        .font(.caption)
-                        .foregroundStyle(Color(.systemBlue))
+                        .font(.appBody)
+                        .foregroundStyle(Color.appAccent)
                 }
                 
                 // camera button
@@ -46,8 +46,8 @@ struct ProfilePhotoPicker: View {
                     showCamera = true
                 } label: {
                     Text("Take new photo")
-                        .font(.caption)
-                        .foregroundStyle(Color(.systemBlue))
+                        .font(.appBody)
+                        .foregroundStyle(Color.appAccent)
                 }
             }
             .foregroundColor(.primary)

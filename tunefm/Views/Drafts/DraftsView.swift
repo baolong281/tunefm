@@ -24,9 +24,9 @@ struct DraftsView: View {
                 if viewModel.drafts.isEmpty {
                     VStack(spacing: 8) {
                         Text("No drafts yet")
-                            .font(.headline)
+                            .font(.appTitle)
                         Text("Save a review as a draft to see it here.")
-                            .font(.subheadline)
+                            .font(.appBody)
                             .foregroundColor(.secondary)
                     }
                     .frame(maxWidth: .infinity, maxHeight: .infinity)

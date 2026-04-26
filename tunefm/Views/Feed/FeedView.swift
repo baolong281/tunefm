@@ -35,7 +35,7 @@ struct FeedView: View {
             .toolbar {
                 ToolbarItem(placement: .principal) {
                     Text("tune.fm")
-                        .font(.headline)
+                        .font(.appTitle)
                         .fontWeight(.bold)
                 }
             }

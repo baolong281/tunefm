@@ -27,7 +27,7 @@ struct CreateReviewView: View {
                 AsyncImage(url: URL(string: viewModel.album.artworkUrl100)) { image in
                     image.resizable()
                 } placeholder: {
-                    Color.gray
+                    Color.appSurfaceMuted
                 }
                 .frame(width: 50, height: 50)
                 .cornerRadius(6)
@@ -35,26 +35,25 @@ struct CreateReviewView: View {
                 VStack(alignment: .leading) {
                     Text(viewModel.album.collectionName)
                     Text(viewModel.album.artistName)
-                        .font(.caption)
+                        .font(.appCaption)
                         .foregroundStyle(.secondary) }
                 Spacer()
             }
             .padding()
-            .background(Color(.systemGray6))
+            .background(Color.appField)
             .cornerRadius(12)
             
             // star ratings
             VStack(alignment: .leading, spacing: 8) {
                 Text("Rating")
-                    .font(.system(size: 18, weight: .bold))
+                    .font(.appTitle)
                 
                 StarRatingView(rating: $viewModel.rating, editable: true)
             }
             
-            
             TextEditor(text: $viewModel.reviewText)
                 .padding(10)
-                .background(Color(.systemGray6))
+                .background(Color.appField)
                 .cornerRadius(12)
                 .frame(height: 200)
                 .scrollContentBackground(.hidden)
@@ -62,7 +61,7 @@ struct CreateReviewView: View {
             
             if let error = viewModel.error {
                 Text(error)
-                    .foregroundColor(.red)
+                    .foregroundColor(.appDestructive)
                     .lineLimit(3)
             }
 
@@ -80,11 +79,11 @@ struct CreateReviewView: View {
                         dismiss()
                     }
                 }
-                .font(.system(size: 16, weight: .bold))
+                .font(.appBodyBold)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
-                .foregroundStyle(.black)
-                .background(Color(.systemGray5))
+                .foregroundStyle(Color.appTextPrimary)
+                .background(Color.appSurfaceMuted)
                 .clipShape(Capsule())
                 
                 Button("Post Review") {
@@ -99,11 +98,11 @@ struct CreateReviewView: View {
                         }
                     }
                 }
-                .font(.system(size: 16, weight: .bold))
+                .font(.appBodyBold)
                 .frame(maxWidth: .infinity)
                 .padding(.vertical, 14)
                 .foregroundStyle(.white)
-                .background(Color.blue)
+                .background(Color.appAccent)
                 .clipShape(Capsule())
             }
             Spacer()
