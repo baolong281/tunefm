@@ -1,6 +1,15 @@
 
 # tunefm
 
+<div align="center">
+  <img width="150" src="https://github.com/user-attachments/assets/e9f8f00b-362f-4b31-afd1-b58b344f5214" />
+  <img width="150" src="https://github.com/user-attachments/assets/741d1a96-15d9-4195-96f0-fa785cf551df" />
+  <img width="150" src="https://github.com/user-attachments/assets/7869d989-a3c3-4c7d-98f6-b1c290adda31" />
+  <img width="150" src="https://github.com/user-attachments/assets/ea31535d-da4f-4464-a762-815210bb50a6" />
+  <img width="150" src="https://github.com/user-attachments/assets/76eefcf1-86fb-491d-8df3-8f298ce584b9" />
+</div>
+
+
 ## Description
 tunefm is a social app made for creating reviews for albums that a user has listened to, similar to Letterboxd. Users create profiles and make album reviews which will appear on their profile and in the main feed. They also have the ability to save drafts locally and upload them later.
 
